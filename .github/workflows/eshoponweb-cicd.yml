@@ -19,7 +19,7 @@ on:
 #Environment variables https://docs.github.com/en/actions/learn-github-actions/environment-variables
 env:
   RESOURCE-GROUP: rg-eshoponweb-${{ inputs.location }}
-  LOCATION: ${{ inputs.location }}
+  LOCATION: ${{ inputs.location == 'westeurope' && 'polandcentral' || 'italynorth' }}
   TEMPLATE-FILE: infra/webapp.bicep
   SUBSCRIPTION-ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
   WEBAPP-NAME: devops-webapp-${{ inputs.location }}-samuelus261109
@@ -66,6 +66,9 @@ jobs:
     if: ${{ inputs.deploy }}
     runs-on: ubuntu-latest
     needs: buildandtest
+    permissions:
+      contents: read
+      id-token: write
     environment:
       name: "Development"
     steps:
@@ -87,7 +90,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
 
       # Deploy Azure WebApp using Bicep file
       - name: deploy
