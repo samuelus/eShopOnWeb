@@ -19,7 +19,7 @@ on:
 #Environment variables https://docs.github.com/en/actions/learn-github-actions/environment-variables
 env:
   RESOURCE-GROUP: rg-eshoponweb-${{ inputs.location }}
-  LOCATION: ${{ inputs.location == 'westeurope' && 'polandcentral' || 'italynorth' }}
+  LOCATION: ${{ inputs.location == 'westeurope' && 'norwayeast' || 'italynorth' }}
   TEMPLATE-FILE: infra/webapp.bicep
   SUBSCRIPTION-ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
   WEBAPP-NAME: devops-webapp-${{ inputs.location }}-samuelus261109
